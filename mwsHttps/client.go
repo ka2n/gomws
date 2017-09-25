@@ -135,6 +135,21 @@ func (client *Client) buildRequest() (*http.Request, error) {
 	return req, nil
 }
 
+func (client *Client) Request() (*http.Request, error) {
+	// Check whether or not the query is signed, if not, return error
+	signatureErr := client.checkSignStatus()
+	if signatureErr != nil {
+		return nil, signatureErr
+	}
+
+	// Build the http request with request params and add content header.
+	req, err := client.buildRequest()
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Send send the http request to mws server.
 // If the query is indicated un signed, an error will return.
 func (client *Client) Send() *Response {
