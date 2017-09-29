@@ -178,11 +178,11 @@ func (client *Client) Send() *Response {
 
 	// Send the request and parse the response.
 	resp, err := client.Client.Do(req)
-	defer resp.Body.Close()
 	if err != nil {
 		response.Error = err
 		return response
 	}
+	defer resp.Body.Close()
 
 	return client.parseResponse(response, resp)
 }
